@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vaddadi Sai Krishna | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #0d0d0d; --paper: #f5f0e8; --gold: #c8962a; --gold-light: #f0d98a;
+    --teal: #1a6b5c; --teal-light: #d0ede8; --accent: #b03a2e; --muted: #6b6255;
+    --border: rgba(13,13,13,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); overflow-x: hidden; }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(245,240,232,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+  .nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ink); }
+  #hero {
+    min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; padding: 8rem 2.5rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero-bg { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(200,150,42,0.08) 0%, transparent 70%); }
+  .hero-grid-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px; opacity: 0.4;
+  }
+  .hero-left { position: relative; z-index: 2; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
+    background: rgba(200,150,42,0.1); border: 1px solid rgba(200,150,42,0.25);
+    padding: 4px 14px; border-radius: 99px; margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; line-height: 1.05; color: var(--ink); margin-bottom: 0.5rem; animation: fadeUp 0.9s 0.1s ease both; }
+  .hero-name span { color: var(--teal); }
+  .hero-title { font-size: 1rem; color: var(--muted); font-weight: 400; margin-bottom: 2rem; letter-spacing: 0.02em; animation: fadeUp 0.9s 0.2s ease both; }
+  .hero-stats { display: flex; gap: 2rem; margin-bottom: 2.5rem; animation: fadeUp 0.9s 0.3s ease both; flex-wrap: wrap; }
+  .stat { border-left: 3px solid var(--gold); padding-left: 1rem; }
+  .stat-val { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--ink); line-height: 1; }
+  .stat-lab { font-size: 0.72rem; color: var(--muted); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.9s 0.4s ease both; }
+  .btn-primary { background: var(--ink); color: var(--paper); padding: 0.75rem 1.75rem; border-radius: 4px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s; display: inline-block; }
+  .btn-primary:hover { background: var(--teal); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--ink); padding: 0.75rem 1.75rem; border-radius: 4px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border: 2px solid var(--ink); cursor: pointer; transition: all 0.2s; display: inline-block; }
+  .btn-outline:hover { background: var(--ink); color: var(--paper); transform: translateY(-2px); }
+  .hero-right { position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; animation: fadeIn 1.2s 0.3s ease both; }
+  .hero-card { background: var(--ink); color: var(--paper); border-radius: 12px; padding: 2.5rem; width: 100%; max-width: 380px; position: relative; overflow: hidden; }
+  .hero-card::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(200,150,42,0.15); }
+  .hero-card-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--gold-light); }
+  .skill-chip { display: inline-block; font-size: 0.72rem; font-weight: 500; padding: 4px 10px; border-radius: 4px; margin: 3px 3px 3px 0; background: rgba(255,255,255,0.1); color: rgba(245,240,232,0.85); border: 1px solid rgba(255,255,255,0.12); }
+  .skill-chip.gold { background: rgba(200,150,42,0.2); color: var(--gold-light); border-color: rgba(200,150,42,0.3); }
+  .hero-contact { margin-top: 1.75rem; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 1.25rem; }
+  .hero-contact p { font-size: 0.78rem; color: rgba(245,240,232,0.6); margin-bottom: 4px; }
+  .hero-contact a { color: var(--gold-light); text-decoration: none; font-weight: 500; font-size: 0.82rem; }
+  section { padding: 6rem 2.5rem; }
+  .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; display: block; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; line-height: 1.1; color: var(--ink); margin-bottom: 3rem; }
+  .section-title em { font-style: italic; color: var(--teal); }
+  #about { background: var(--ink); color: var(--paper); }
+  #about .section-label { color: var(--gold-light); }
+  #about .section-title { color: var(--paper); }
+  #about .section-title em { color: var(--gold-light); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .about-text p { font-size: 0.95rem; line-height: 1.8; color: rgba(245,240,232,0.8); margin-bottom: 1rem; }
+  .about-text strong { color: var(--gold-light); }
+  .about-highlight { border-left: 3px solid var(--gold); padding-left: 1.25rem; margin: 2rem 0; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--gold-light); line-height: 1.5; }
+  .about-awards { display: flex; flex-direction: column; gap: 1rem; }
+  .award-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem 1.25rem; display: flex; align-items: flex-start; gap: 1rem; }
+  .award-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .award-title { font-weight: 600; font-size: 0.88rem; color: var(--gold-light); margin-bottom: 2px; }
+  .award-desc { font-size: 0.78rem; color: rgba(245,240,232,0.6); line-height: 1.4; }
+  #experience { position: relative; }
+  .exp-timeline { position: relative; max-width: 860px; margin: 0 auto; }
+  .exp-timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--teal), transparent); }
+  .exp-item { padding-left: 2.5rem; padding-bottom: 3rem; position: relative; }
+  .exp-dot { position: absolute; left: -7px; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--gold); border: 3px solid var(--paper); box-shadow: 0 0 0 3px rgba(200,150,42,0.3); }
+  .exp-period { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+  .exp-role { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+  .exp-company { font-size: 0.85rem; color: var(--teal); font-weight: 600; margin-bottom: 1rem; letter-spacing: 0.04em; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .exp-bullets li { font-size: 0.88rem; color: var(--muted); line-height: 1.6; padding-left: 1.25rem; position: relative; }
+  .exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+  .exp-bullets li strong { color: var(--ink); font-weight: 600; }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+  .exp-tag { font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 4px; background: var(--teal-light); color: var(--teal); border: 1px solid rgba(26,107,92,0.2); letter-spacing: 0.04em; }
+  #skills { background: #1a1a1a; }
+  #skills .section-label { color: var(--gold-light); }
+  #skills .section-title { color: #f5f0e8; }
+  #skills .section-title em { color: var(--gold-light); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .skill-group { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1.5rem; transition: border-color 0.2s, transform 0.2s; }
+  .skill-group:hover { border-color: rgba(200,150,42,0.4); transform: translateY(-4px); }
+  .skill-group-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .skill-bar-wrap { margin-bottom: 0.85rem; }
+  .skill-bar-label { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .skill-bar-name { font-size: 0.8rem; color: rgba(245,240,232,0.85); font-weight: 500; }
+  .skill-bar-pct { font-size: 0.72rem; color: rgba(245,240,232,0.4); }
+  .skill-bar-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
+  .skill-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--teal), var(--gold)); transform: scaleX(0); transform-origin: left; transition: transform 1.2s cubic-bezier(0.4,0,0.2,1); }
+  .skill-bar-fill.animated { transform: scaleX(1); }
+  #achievements { position: relative; overflow: hidden; }
+  .achievements-bg { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 50% 70% at 20% 50%, rgba(26,107,92,0.06) 0%, transparent 70%); }
+  .ach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .ach-card { border: 1px solid var(--border); border-radius: 10px; padding: 1.75rem 1.5rem; position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; background: rgba(255,255,255,0.5); }
+  .ach-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--teal)); }
+  .ach-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(200,150,42,0.12); }
+  .ach-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .ach-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.4rem; }
+  .ach-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .ach-year { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; margin-top: 0.75rem; display: block; }
+  #education { background: var(--ink); color: var(--paper); }
+  #education .section-label { color: var(--gold-light); }
+  #education .section-title { color: var(--paper); }
+  #education .section-title em { color: var(--gold-light); }
+  .edu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .edu-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 1.5rem; transition: border-color 0.2s, transform 0.2s; }
+  .edu-card:hover { border-color: rgba(200,150,42,0.4); transform: translateY(-4px); }
+  .edu-degree { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--gold-light); margin-bottom: 0.3rem; }
+  .edu-school { font-size: 0.82rem; color: rgba(245,240,232,0.7); margin-bottom: 0.5rem; line-height: 1.4; }
+  .edu-meta { font-size: 0.75rem; color: rgba(245,240,232,0.4); }
+  .edu-score { display: inline-block; margin-top: 0.75rem; background: rgba(200,150,42,0.15); border: 1px solid rgba(200,150,42,0.25); color: var(--gold-light); font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 4px; }
+  #contact { text-align: center; padding: 6rem 2.5rem; }
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+  .contact-cta { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 900; margin-bottom: 1rem; line-height: 1.1; }
+  .contact-cta em { font-style: italic; color: var(--teal); }
+  .contact-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.6; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .contact-link { display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); text-decoration: none; border: 2px solid var(--border); border-radius: 4px; padding: 0.75rem 1.5rem; transition: all 0.2s; }
+  .contact-link:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); transform: translateY(-2px); }
+  .contact-link.featured { background: var(--teal); color: var(--paper); border-color: var(--teal); }
+  .contact-link.featured:hover { background: var(--ink); border-color: var(--ink); }
+  footer { text-align: center; padding: 1.5rem; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 0.06em; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) {
+    #hero { grid-template-columns: 1fr; padding-top: 6rem; }
+    .hero-right { display: none; }
+    .about-grid, .skills-grid, .ach-grid, .edu-grid { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { gap: 1rem; }
+    section { padding: 4rem 1.25rem; }
+    #hero { padding: 6rem 1.25rem 3rem; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">VSK</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#achievements">Awards</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-left">
+    <span class="hero-eyebrow">📊 Open to opportunities in Hyderabad &amp; Bangalore</span>
+    <h1 class="hero-name">Vaddadi<br><span>Sai Krishna</span></h1>
+    <p class="hero-title">Senior Data Processing Programmer &amp; Project Manager · Kantar</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-val">4+</div><div class="stat-lab">Years exp.</div></div>
+      <div class="stat"><div class="stat-val">60+</div><div class="stat-lab">Projects</div></div>
+      <div class="stat"><div class="stat-val">87.5%</div><div class="stat-lab">Efficiency gain</div></div>
+      <div class="stat"><div class="stat-val">3×</div><div class="stat-lab">Superstar award</div></div>
+    </div>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">Get in touch</a>
+      <a href="#experience" class="btn-outline">View experience</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-card">
+      <p class="hero-card-title">Core Tech Stack</p>
+      <div>
+        <span class="skill-chip gold">Power BI</span><span class="skill-chip gold">DAX</span>
+        <span class="skill-chip gold">Power Query</span><span class="skill-chip">IBM Dimensions</span>
+        <span class="skill-chip">SPSS</span><span class="skill-chip">SQL</span>
+        <span class="skill-chip">Advanced Excel</span><span class="skill-chip">Python</span>
+        <span class="skill-chip">Row-Level Security</span><span class="skill-chip">QA / UAT</span>
+        <span class="skill-chip">SOW Management</span><span class="skill-chip">Risk Management</span>
+      </div>
+      <div class="hero-contact">
+        <p>📍 Hyderabad, India</p>
+        <p>📧 <a href="mailto:Suryavaddadhi291@gmail.com">Suryavaddadhi291@gmail.com</a></p>
+        <p>📞 <a href="tel:+919494332291">+91-9494332291</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <span class="section-label">About me</span>
+  <h2 class="section-title">Bridging <em>data</em> and <em>delivery</em></h2>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>I'm a <strong>Techno-Functional professional</strong> with 4+ years at Kantar — one of the world's largest market research firms. I manage the complete lifecycle of <strong>multi-country brand trackers</strong> across 7 global markets while also writing the complex data scripts that power them.</p>
+      <p>My background is genuinely rare: most data programmers can't run a project, and most PMs can't write a SPSS script. I do both — which is why I've consistently delivered <strong>100% on-time</strong> for clients like OPPO, ING, and Pepsi.</p>
+      <blockquote class="about-highlight">"Reduced project runtime from 16 hours to 2 hours — an 87.5% operational efficiency improvement — through strategic automation."</blockquote>
+      <p>I thrive in cross-functional environments where technical precision meets stakeholder management, and I'm now seeking my next challenge in <strong>Hyderabad or Bangalore</strong>.</p>
+    </div>
+    <div class="about-awards">
+      <div class="award-card"><span class="award-icon">⭐</span><div><p class="award-title">Superstar Award — H2 2025</p><p class="award-desc">Recognised for exceptional quality and consistently meeting deadlines across major global accounts.</p></div></div>
+      <div class="award-card"><span class="award-icon">🚀</span><div><p class="award-title">Superstar Award — H1 2025</p><p class="award-desc">Awarded for reducing workflow runtime from 16 hours to 2 hours — an 87.5% operational efficiency gain.</p></div></div>
+      <div class="award-card"><span class="award-icon">🏆</span><div><p class="award-title">Superstar Award — H1 2024</p><p class="award-desc">Recognised for exceptional quality control and timeline management across 60+ multi-country trackers.</p></div></div>
+      <div class="award-card"><span class="award-icon">🤝</span><div><p class="award-title">3 Cheers Award — Project ING</p><p class="award-desc">Awarded for collaborative spirit, cross-team support, and maintaining a 5/5 project rating.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <span class="section-label">Work experience</span>
+  <h2 class="section-title">My professional <em>journey</em></h2>
+  <div class="exp-timeline">
+    <div class="exp-item reveal">
+      <div class="exp-dot"></div>
+      <p class="exp-period">Oct 2021 — Present · 4 Years</p>
+      <h3 class="exp-role">Senior Data Processing Programmer &amp; Project Manager</h3>
+      <p class="exp-company">Kantar · Hyderabad</p>
+      <ul class="exp-bullets">
+        <li>Managed the <strong>complete end-to-end lifecycle</strong> for 60+ multi-country trackers across USA, Australia, New Zealand, China, Philippines, Indonesia, and Thailand.</li>
+        <li>Spearheaded automation that reduced <strong>project runtime from 16 hours → 2 hours</strong> (87.5% efficiency improvement) through strategic workflow optimisation.</li>
+        <li>Designed and deployed dynamic <strong>Power BI dashboards</strong> using DAX, Power Query, and Row-Level Security, translating complex data into actionable client insights.</li>
+        <li>Extracted, cleaned, and transformed large-scale raw datasets using <strong>IBM Dimensions and SPSS</strong>, including complex weighting and data validation procedures.</li>
+        <li>Led stakeholder alignment, gathered supplier quotes, managed resource allocation, and ensured <strong>100% adherence to SOW guidelines and timelines</strong>.</li>
+        <li>Supervised QA / UAT, provided consultation on questionnaire design, and maintained comprehensive project plans, issue logs, and change documentation.</li>
+        <li>Maintained a <strong>5/5 rating</strong> across major global projects: PointsBet, ING, and OPPO — across 7 international markets simultaneously.</li>
+      </ul>
+      <div class="exp-tags">
+        <span class="exp-tag">Power BI</span><span class="exp-tag">IBM Dimensions</span><span class="exp-tag">SPSS</span>
+        <span class="exp-tag">DAX</span><span class="exp-tag">SQL</span><span class="exp-tag">Project Management</span>
+        <span class="exp-tag">Brand Trackers</span><span class="exp-tag">QA / UAT</span><span class="exp-tag">Automation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <span class="section-label">Technical skills</span>
+  <h2 class="section-title">Tools &amp; <em>expertise</em></h2>
+  <div class="skills-grid reveal">
+    <div class="skill-group">
+      <p class="skill-group-title">📊 Business Intelligence</p>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">Power BI Desktop &amp; Service</span><span class="skill-bar-pct">95%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.95"></div></div></div>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">DAX</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.90"></div></div></div>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">Power Query (M)</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.88"></div></div></div>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">Row-Level Security</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.85"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-title">🔬 Data Processing</p>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">IBM Dimensions</span><span class="skill-bar-pct">95%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.95"></div></div></div>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">SPSS</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.90"></div></div></div>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">Advanced Excel</span><span class="skill-bar-pct">92%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.92"></div></div></div>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">SQL</span><span class="skill-bar-pct">75%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.75"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-title">📋 Project Management</p>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">End-to-End Delivery</span><span class="skill-bar-pct">95%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.95"></div></div></div>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">Stakeholder Management</span><span class="skill-bar-pct">92%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.92"></div></div></div>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">Risk &amp; SOW Management</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.90"></div></div></div>
+      <div class="skill-bar-wrap"><div class="skill-bar-label"><span class="skill-bar-name">QA / UAT</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.88"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="achievements-bg"></div>
+  <span class="section-label">Recognition</span>
+  <h2 class="section-title">Awards &amp; <em>milestones</em></h2>
+  <div class="ach-grid reveal">
+    <div class="ach-card"><span class="ach-icon">⭐</span><p class="ach-title">Superstar Award — Efficiency</p><p class="ach-desc">Recognised for quality and consistently meeting deadlines across major global accounts.</p><span class="ach-year">H2 2025 · Kantar</span></div>
+    <div class="ach-card"><span class="ach-icon">🚀</span><p class="ach-title">87.5% Runtime Reduction</p><p class="ach-desc">Reduced data processing runtime from 16 hours to just 2 hours through strategic automation.</p><span class="ach-year">H1 2025 · Kantar</span></div>
+    <div class="ach-card"><span class="ach-icon">🏆</span><p class="ach-title">Superstar Award — Efficiency</p><p class="ach-desc">Exceptional quality control and timeline management across 60+ multi-country trackers.</p><span class="ach-year">H1 2024 · Kantar</span></div>
+    <div class="ach-card"><span class="ach-icon">🤝</span><p class="ach-title">3 Cheers Award</p><p class="ach-desc">Awarded for collaborative spirit and team support on Project ING — a global multi-country tracker.</p><span class="ach-year">Kantar</span></div>
+    <div class="ach-card"><span class="ach-icon">🌟</span><p class="ach-title">5/5 Project Ratings</p><p class="ach-desc">Consistently maintained perfect ratings on major global projects: PointsBet, ING, and OPPO.</p><span class="ach-year">Multiple years · Kantar</span></div>
+    <div class="ach-card"><span class="ach-icon">🌍</span><p class="ach-title">7-Country Delivery Lead</p><p class="ach-desc">Managed simultaneous trackers across USA, Australia, NZ, China, Philippines, Indonesia &amp; Thailand.</p><span class="ach-year">Ongoing · Kantar</span></div>
+  </div>
+</section>
+
+<section id="education">
+  <span class="section-label">Education</span>
+  <h2 class="section-title">Academic <em>background</em></h2>
+  <div class="edu-grid reveal">
+    <div class="edu-card"><p class="edu-degree">B.Tech — Electronics &amp; Communication</p><p class="edu-school">Bhimavaram Institute of Engineering and Technology</p><p class="edu-meta">2017 – 2020</p><span class="edu-score">CGPA 6.78 / 10</span></div>
+    <div class="edu-card"><p class="edu-degree">Diploma — Engineering</p><p class="edu-school">Smt. B. Seetha Polytechnic College</p><p class="edu-meta">2014 – 2017</p><span class="edu-score">68%</span></div>
+    <div class="edu-card"><p class="edu-degree">SSC — Secondary Education</p><p class="edu-school">Z.P.H. School</p><p class="edu-meta">2013 – 2014</p><span class="edu-score">87%</span></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-inner reveal">
+    <h2 class="contact-cta">Let's work <em>together</em></h2>
+    <p class="contact-sub">I'm actively exploring Data Analyst, BI Developer, and Analytics Project Manager roles in Hyderabad and Bangalore. Feel free to reach out — I respond within 24 hours.</p>
+    <div class="contact-links">
+      <a href="mailto:Suryavaddadhi291@gmail.com" class="contact-link featured">✉ Email me</a>
+      <a href="tel:+919494332291" class="contact-link">📞 Call me</a>
+      <a href="https://linkedin.com/in/sai-krishna-vaddadi-4079ab195" target="_blank" class="contact-link">🔗 LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Vaddadi Sai Krishna · Hyderabad, India · Built with care</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.skill-bar-fill').forEach(b => {
+        const w = b.getAttribute('data-width');
+        b.style.transform = 'scaleX(' + w + ')';
+        b.classList.add('animated');
+      });
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#'+current ? 'var(--ink)' : ''; });
+});
+</script>
+</body>
+</html>
